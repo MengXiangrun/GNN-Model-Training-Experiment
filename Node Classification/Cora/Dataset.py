@@ -20,6 +20,14 @@ class HomogeneousGraph():
 
         self.graph_label = None
 
+    def to_device(self, device):
+        for variable_name in dir(self):
+            variable = getattr(self, variable_name)
+            if torch.is_tensor(variable):
+                setattr(self, variable_name, variable.to(device))
+
+
+
 
 class Cora(torch.nn.Module):
     def __init__(self, split=False, feature_normalization=False):
