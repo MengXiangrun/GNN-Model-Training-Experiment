@@ -72,6 +72,10 @@ for split in ['public', 'full', 'geom-gcn']:
     optimizer = torch.optim.Adam(model.parameters(), weight_decay=0.0005, lr=0.0005)
     stop = EarlyStopping(patience=30, threshold=0.0001)
 
+    data.train_graph.to_device(device=device)
+    data.valid_graph.to_device(device=device)
+    model = model.to(device=device)
+
     for epoch in range(10000):
         if stop.stop:
             break
@@ -97,6 +101,8 @@ for split in ['public', 'full', 'geom-gcn']:
         # metrics
         true_label = true_label.max(1)[1]
         pred_label = pred_label.max(1)[1]
+        true_label = true_label.detach().cpu().numpy()
+        pred_label = pred_label.detach().cpu().numpy()
         accuracy = accuracy_score(y_true=true_label, y_pred=pred_label)
 
         print(f'epoch {epoch} train loss {loss.item():.4f} accuracy {accuracy:.4f}')
@@ -121,12 +127,15 @@ for split in ['public', 'full', 'geom-gcn']:
             # metrics
             true_label = true_label.max(1)[1]
             pred_label = pred_label.max(1)[1]
+            true_label = true_label.detach().cpu().numpy()
+            pred_label = pred_label.detach().cpu().numpy()
             accuracy = accuracy_score(y_true=true_label, y_pred=pred_label)
 
             print(f'epoch {epoch} valid loss {loss.item():.4f} accuracy {accuracy:.4f}')
             stop.save(model=model, val_loss=-accuracy * 10000 + loss.item())
 
     # test
+    data.test_graph.to_device(device=device)
     with torch.no_grad():
         model.eval()
         model.load_state_dict(stop.best_model_parameter)
@@ -148,6 +157,8 @@ for split in ['public', 'full', 'geom-gcn']:
         # metrics
         true_label = true_label.max(1)[1]
         pred_label = pred_label.max(1)[1]
+        true_label = true_label.detach().cpu().numpy()
+        pred_label = pred_label.detach().cpu().numpy()
         accuracy = accuracy_score(y_true=true_label, y_pred=pred_label)
 
         print(f'test loss {loss.item():.4f} accuracy {accuracy:.4f}')
@@ -163,6 +174,7 @@ for split in ['public', 'full', 'geom-gcn']:
 mean_test_accuracy = np.array(mean_test_accuracy)
 mean_test_accuracy = np.mean(mean_test_accuracy)
 result['mean_test_accuracy'] = float(mean_test_accuracy)
+print('mean_test_accuracy:', mean_test_accuracy)
 print(result)
 
 result_list = []
