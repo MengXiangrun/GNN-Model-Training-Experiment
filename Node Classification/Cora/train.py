@@ -170,8 +170,8 @@ for split in ['public', 'full', 'geom-gcn']:
 mean_test_accuracy = np.array(mean_test_accuracy)
 mean_test_accuracy = np.mean(mean_test_accuracy)
 result['mean_test_accuracy'] = float(mean_test_accuracy)
-print('mean_test_accuracy:', mean_test_accuracy)
-print(result)
+print(f'mean_test_accuracy: {mean_test_accuracy:.4f} ({mean_test_accuracy*100:.2f}%)')
+print()
 
 result_list = []
 for key, value in result.items():
@@ -181,6 +181,7 @@ for key, value in result.items():
         value = pd.DataFrame([value], columns=[key])
     result_list.append(value)
 result = pd.concat(result_list, axis=0)
+print(result)
 
 from datetime import datetime
 
