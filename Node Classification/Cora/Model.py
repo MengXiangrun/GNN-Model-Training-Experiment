@@ -2,6 +2,7 @@ import torch
 import torch_geometric
 from torch_geometric.nn import GATConv, GCNConv, SAGEConv
 
+
 class Linear(torch.nn.Module):
     def __init__(self, out_dim):
         super().__init__()
@@ -35,6 +36,8 @@ class GCN(torch.nn.Module):
                  is_Sum=False,
                  is_SelfLoop=False):
         super().__init__()
+        self.model_name = 'GCN'
+        
         self.in_dim = in_dim
         self.hidden_dim = hidden_dim
         self.out_dim = out_dim
@@ -42,7 +45,6 @@ class GCN(torch.nn.Module):
         self.num_head = num_head
         self.head_dim = self.hidden_dim // self.num_head
         self.dropout = dropout
-        self.model_name = 'GCN'
 
         self.is_InLinear = is_InLinear
         self.is_ResidualConnection = is_ResidualConnection
