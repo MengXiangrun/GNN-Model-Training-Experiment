@@ -162,10 +162,10 @@ for split in ['public', 'full', 'geom-gcn']:
         print()
         mean_test_accuracy.append(accuracy)
 
-    result[split]['split'] = split
     result[split] = model.output_parameter()
     result[split]['seed'] = seed
     result[split]['test_accuracy'] = accuracy
+    result[split]['split'] = split
 
 mean_test_accuracy = np.array(mean_test_accuracy)
 mean_test_accuracy = np.mean(mean_test_accuracy)
