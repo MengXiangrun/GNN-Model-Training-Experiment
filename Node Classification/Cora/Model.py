@@ -1,15 +1,6 @@
 import torch
-import torch.nn.functional as F
-from absl.testing.parameterized import parameters
-from torch_geometric.nn import GATConv, GCNConv, SAGEConv, Linear
 import torch_geometric
-from torch_geometric.utils import to_undirected, remove_self_loops, add_self_loops
-import torch
-import torch.nn.functional as F
-from torch_geometric.nn import GATConv, GCNConv, SAGEConv, Linear
-import torch.nn as nn
-from torch_geometric.utils import to_undirected, remove_self_loops, add_self_loops
-
+from torch_geometric.nn import GATConv, GCNConv, SAGEConv
 
 class Linear(torch.nn.Module):
     def __init__(self, out_dim):
